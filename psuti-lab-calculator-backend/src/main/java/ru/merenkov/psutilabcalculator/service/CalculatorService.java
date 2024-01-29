@@ -1,25 +1,36 @@
 package ru.merenkov.psutilabcalculator.service;
 
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 @Service
+@Validated
 public class CalculatorService {
 
-    public int calculate(int x, int y) {
-        return x + y;
+    public double calculateAcceptableDistance(@PositiveOrZero double maxWaitTime,
+                                              @PositiveOrZero double processingTime,
+                                              @Positive double propagationSpeed) {
+        return (maxWaitTime - processingTime) / (2 * propagationSpeed);
     }
 
-    public double calculateWaitTime(double arrivalRate, double serviceRate, int numberOfChannels) {
-        double trafficIntensity = arrivalRate / (numberOfChannels * serviceRate);
-
-        if (trafficIntensity >= 1.0) {
-            System.out.println("Система перегружена. Интенсивность трафика больше 1.0");
-            return -1;
-        }
-
-        double utilization = trafficIntensity / (1 - trafficIntensity);
-
-        return utilization / (numberOfChannels * serviceRate - arrivalRate);
+    public double calculateAverageDelay(@DecimalMin(value = "0")
+                                        @DecimalMax(value = "1", inclusive = false) double serverLoad,
+                                        @Positive double serverPerformance) {
+        return (serverLoad / (1 - serverLoad)) * (1 / serverPerformance);
     }
 
+    public double calculateTrafficDensity(@PositiveOrZero double incomingMessagesRate,
+                                          @Positive double serverPerformance) {
+        return incomingMessagesRate / serverPerformance;
+    }
+
+    public double calculateIncomingTraffic(@Positive double radius,
+                                           @Positive double deviceDensity,
+                                           @Positive double deviceSpeed) {
+        return 2 * radius * deviceDensity * deviceSpeed;
+    }
 }

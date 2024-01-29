@@ -9,17 +9,36 @@ import ru.merenkov.psutilabcalculator.service.CalculatorService;
 @CrossOrigin(origins = "http://localhost:8080")
 @AllArgsConstructor
 public class CalculatorController {
+
     private final CalculatorService calculatorService;
 
-    @GetMapping("/calculate")
-    public int calculate(@RequestParam("x") int x, @RequestParam("y") int y) {
-        return calculatorService.calculate(x, y);
+    @GetMapping("/calculate-acceptable-distance")
+    public double calculateAcceptableDistance(
+            @RequestParam("maxWaitTime") double maxWaitTime,
+            @RequestParam("processingTime") double processingTime,
+            @RequestParam("propagationSpeed") double propagationSpeed) {
+        return calculatorService.calculateAcceptableDistance(maxWaitTime, processingTime, propagationSpeed);
     }
 
-    @GetMapping("/calculate-wait-time")
-    public double calculateWaitTime(@RequestParam("arrivalRate") double arrivalRate,
-                                    @RequestParam("serviceRate") double serviceRate,
-                                    @RequestParam("numberOfChannels") int numberOfChannels) {
-        return calculatorService.calculateWaitTime(arrivalRate, serviceRate, numberOfChannels);
+    @GetMapping("/calculate-average-delay")
+    public double calculateAverageDelay(
+            @RequestParam("serverLoad") double serverLoad,
+            @RequestParam("serverPerformance") double serverPerformance) {
+        return calculatorService.calculateAverageDelay(serverLoad, serverPerformance);
+    }
+
+    @GetMapping("/calculate-traffic-density")
+    public double calculateTrafficDensity(
+            @RequestParam("incomingMessagesRate") double incomingMessagesRate,
+            @RequestParam("serverPerformance") double serverPerformance) {
+        return calculatorService.calculateTrafficDensity(incomingMessagesRate, serverPerformance);
+    }
+
+    @GetMapping("/calculate-incoming-traffic")
+    public double calculateIncomingTraffic(
+            @RequestParam("radius") double radius,
+            @RequestParam("deviceDensity") double deviceDensity,
+            @RequestParam("deviceSpeed") double deviceSpeed) {
+        return calculatorService.calculateIncomingTraffic(radius, deviceDensity, deviceSpeed);
     }
 }
