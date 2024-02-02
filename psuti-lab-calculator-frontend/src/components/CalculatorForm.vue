@@ -1,7 +1,7 @@
 <template>
   <div class="calculator">
     <h2 class="title">{{ config.title }}</h2>
-    <div v-katex:display="{ expression: config.formula, options: { throwOnError: false,  }}"></div>
+    <div v-if="false" v-katex:display="{ expression: config.formula, options: { throwOnError: false,  }}"></div>
     <div class="input-container">
       <div v-for="input in config.inputs" :key="input.id" class="input-group">
         <label :for="input.id">{{ input.label }}:</label>
@@ -15,7 +15,13 @@
         <strong style="color: red;">Ошибка: {{ calculationError }}</strong>
       </template>
       <template v-else>
-        <strong>Результат:</strong> {{ result }}
+        <div><strong>Результат:</strong></div>
+        <div>
+          <div>
+            <div class="result-var">{{ config.resultVar }} = {{ result }}</div>
+            <p v-if="config.resultDescription" class="input-description">{{ config.resultDescription }}</p>
+          </div>
+        </div>
       </template>
     </div>
   </div>
@@ -152,5 +158,9 @@ button {
 
 .title {
   text-align: center;
+}
+
+.result-var {
+  margin-top: 10px;
 }
 </style>
